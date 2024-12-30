@@ -76,7 +76,7 @@ func initWSConnection(ctx echo.Context) error {
 func sendServerState(ws *websocket.Conn) error {
   for {
     // Write
-		err := ws.WriteJSON(gameState)
+		err := ws.WriteJSON(gameState.GetPlayers())
 		if err != nil {
 			fmt.Println(err)
       return nil

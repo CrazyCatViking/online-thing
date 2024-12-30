@@ -22,7 +22,7 @@ export const createGameState = async () => {
       ws.onmessage = (e) => {
         const data = JSON.parse(e.data);
 
-        for (const player of Object.values(data.Players)) {
+        for (const player of Object.values(data)) {
           const existingPlayer = players.get(player.id);
 
           if (!existingPlayer) {
