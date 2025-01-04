@@ -1,35 +1,45 @@
-import { initInputQueue } from "./inputQueue.js";
-import { createGameState } from "./gameState.js";
+import { initInputQueue } from './inputQueue.js';
 
-export const initGame = async () => {
-  const canvas = document.getElementById('game');
-  const ctx = canvas.getContext('2d');
+/** @param {string} canvasId */
+export const createCanvasRenderer = (canvasId) => {
+  const canvas = /** @type {HTMLCanvasElement} */(document.getElementById('game'));
 
-  const inputQueue = initInputQueue();
+  if (!canvas) {
+    throw new Error('Canvas not found');
+  }
 
-  const gameState = await createGameState();
+  const visibleBuffer = canvas.getContext('2d');
 
-  const renderFrame = () => {
-    const pressedKeys = inputQueue.collectInput();
+  if (!visibleBuffer) {
+    throw new Error('Could not get canvas context');
+  }
 
+  const bufferCanvas = document.createElement('canvas'); 
+  bufferCanvas.setAttribute('hidden', 'hidden');
+  bufferCanvas.setAttribute('width', canvas.width.toString());
+  bufferCanvas.setAttribute('height', canvas.height.toString());
+
+  const ctx = bufferCanvas.getContext('2d');
+
+  if (!ctx) {
+    throw new Error('Could not get buffer canvas context');
+  }
+
+  const input = initInputQueue(canvas);
+
+  /** @param {import('./types.d.ts').Renderable[]} renderables */
+  const render = (renderables) => {
     ctx.fillStyle = 'black';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    gameState.update(pressedKeys);
-
-    for (const player of gameState.players.values()) {
-      player.render(ctx);
+    for (let i = 0; i < renderables.length; i++) {
+      renderables[i].render({ canvas, ctx, input });
     }
 
-    requestAnimationFrame(renderFrame);
+    visibleBuffer.drawImage(bufferCanvas, 0, 0);
   }
-
-  const start = () => {
-    renderFrame();
-  };
 
   return {
-    start,
-  }
+    render,
+  };
 }
-

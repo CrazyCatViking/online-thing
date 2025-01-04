@@ -1,5 +1,5 @@
-import { initGame } from './game/renderer.js';
+import { initGame } from './game/game.js';
 
 // Start game loop
-const game = await initGame();
+const game = initGame();
 game.start();

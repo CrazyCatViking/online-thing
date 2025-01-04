@@ -1,20 +1,35 @@
-export const initInputQueue = () => {
-  /** @type {(Map<string, bool>)} */
-  const queue = new Map();
+/** @param {HTMLCanvasElement} canvas */
+export const initInputQueue = (canvas) => {
+  /** @type {(Map<string, boolean>)} */
+  const keys = new Map();
+
+  let mouseX = 0;
+  let mouseY = 0;
 
   document.addEventListener('keydown', (e) => {
-    queue.set(e.code, true);
+    keys.set(e.code, true);
   });
 
   document.addEventListener('keyup', (e) => {
-    queue.delete(e.code);
+    keys.delete(e.code);
   });
 
-  const collectInput = () => {
-    return Array.from(queue.keys());
-  };
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX - canvas.offsetLeft;
+    mouseY = e.clientY - canvas.offsetTop;
+  });
+
+  document.addEventListener('mousedown', () => {
+    keys.set('leftMouseButton', true);
+  });
+
+  document.addEventListener('mouseup', () => {
+    keys.delete('leftMouseButton');
+  });
 
   return {
-    collectInput,
+    keys,
+    get mouseX() { return mouseX },
+    get mouseY() { return mouseY },
   }
 }

@@ -1,10 +1,15 @@
-/** @typedef {ReturnType<typeof createPlayer>} Player */
-
+/**
+ * @typedef {ReturnType<typeof createPlayer>} Player 
+ * @param {number} initialX
+ * @param {number} initialY
+ * @param {string} initialUuid
+ */
 export const createPlayer = (initialX, initialY, initialUuid) => {
   let x = initialX;
   let y = initialY;
   let uuid = initialUuid;
 
+  /** @param {number} newX @param {number} newY */
   const update = (newX, newY) => {
     x = newX;
     y = newY;
