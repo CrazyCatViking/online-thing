@@ -26,6 +26,23 @@ export const createPlayer = (initialX, initialY, initialUuid) => {
     if (input.keys.has('KeyA')) {
       x -= 1;
     }
+
+    // Temporary bounds checking
+    if (x < 0) {
+      x = 0;
+    }
+
+    if (x > (800 - 20)) {
+      x = 800 - 20;
+    }
+
+    if (y < 0) {
+      y = 0;
+    }
+
+    if (y > 600 - 20) {
+      y = 600 - 20;
+    }
   }
 
   /** @param {import('./types.d.ts').RenderContext} context */
