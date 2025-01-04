@@ -36,11 +36,14 @@ export const createCanvasRenderer = (canvasId, gameState) => {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     renderable.render({ canvas, ctx, input, gameState });
+  };
 
+  const swap = () => {
     visibleBuffer.drawImage(bufferCanvas, 0, 0);
-  }
+  };
 
   return {
     render,
+    swap,
   };
 }

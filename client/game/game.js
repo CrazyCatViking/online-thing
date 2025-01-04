@@ -17,6 +17,8 @@ export const initGame = () => {
       canvasRenderer.render(menu);
     };
 
+    canvasRenderer.swap();
+
     requestAnimationFrame(renderFrame);
   }
 
