@@ -1,13 +1,21 @@
-import { createMenu } from "./menu/menu.js";
+import { createGameState } from "./gamestate.js";
+import { createMenu } from "./screens/menu.js";
 import { createCanvasRenderer } from "./renderer.js";
+import { createGameBoard } from "./screens/gameBoard.js";
 
 export const initGame = () => {
-  const canvasRenderer = createCanvasRenderer('game');
+  const gameState = createGameState();
+  const canvasRenderer = createCanvasRenderer('game', gameState);
 
   const menu = createMenu();
+  const gameBoard = createGameBoard();
 
   const renderFrame = () => {
-    canvasRenderer.render([menu]);
+    canvasRenderer.render(gameBoard);
+  
+    if (gameState.state === 'menu') {
+      canvasRenderer.render(menu);
+    };
 
     requestAnimationFrame(renderFrame);
   }

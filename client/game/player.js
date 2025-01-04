@@ -9,20 +9,34 @@ export const createPlayer = (initialX, initialY, initialUuid) => {
   let y = initialY;
   let uuid = initialUuid;
 
-  /** @param {number} newX @param {number} newY */
-  const update = (newX, newY) => {
-    x = newX;
-    y = newY;
-  };
+  /** @param {import('./types.d.ts').InputQueue} input */
+  const update = (input) => {
+    if (input.keys.has('KeyW')) {
+      y -= 1;
+    }
 
-  /** @param {CanvasRenderingContext2D} ctx */
-  const render = (ctx) => {
+    if (input.keys.has('KeyS')) {
+      y += 1;
+    }
+
+    if (input.keys.has('KeyD')) {
+      x += 1;
+    }
+
+    if (input.keys.has('KeyA')) {
+      x -= 1;
+    }
+  }
+
+  /** @param {import('./types.d.ts').RenderContext} context */
+  const render = ({ ctx, input }) => {
+    update(input);
+
     ctx.fillStyle = 'white';
     ctx.fillRect(x, y, 20, 20);
   };
 
   return {
-    update,
     render,
   };
 };

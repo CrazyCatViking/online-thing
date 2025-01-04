@@ -1,8 +1,11 @@
 import { initInputQueue } from './inputQueue.js';
 
-/** @param {string} canvasId */
-export const createCanvasRenderer = (canvasId) => {
-  const canvas = /** @type {HTMLCanvasElement} */(document.getElementById('game'));
+/** 
+ * @param {string} canvasId 
+ * @param {import('./types.d.ts').GameState} gameState
+ */
+export const createCanvasRenderer = (canvasId, gameState) => {
+  const canvas = /** @type {HTMLCanvasElement} */(document.getElementById(canvasId));
 
   if (!canvas) {
     throw new Error('Canvas not found');
@@ -27,14 +30,12 @@ export const createCanvasRenderer = (canvasId) => {
 
   const input = initInputQueue(canvas);
 
-  /** @param {import('./types.d.ts').Renderable[]} renderables */
-  const render = (renderables) => {
+  /** @param {import('./types.d.ts').Renderable} renderable */
+  const render = (renderable) => {
     ctx.fillStyle = 'black';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    for (let i = 0; i < renderables.length; i++) {
-      renderables[i].render({ canvas, ctx, input });
-    }
+    renderable.render({ canvas, ctx, input, gameState });
 
     visibleBuffer.drawImage(bufferCanvas, 0, 0);
   }
