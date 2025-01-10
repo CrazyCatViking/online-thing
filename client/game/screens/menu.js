@@ -13,7 +13,7 @@ export const createMenu = () => {
 
   const button = createButton(options, ({ gameState }) => {
     gameState.state = 'playing';
-    gameState.player = createPlayer(100, 100, 'player1');
+    gameState.player = createPlayer(400, 300, 'player1');
   });
 
   /** 
