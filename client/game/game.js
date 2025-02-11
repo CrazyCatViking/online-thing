@@ -3,8 +3,8 @@ import { createMenu } from "./screens/menu.js";
 import { createCanvasRenderer } from "./renderer.js";
 import { createGameBoard } from "./screens/gameBoard.js";
 
-export const initGame = () => {
-  const gameState = createGameState();
+export const initGame = async () => {
+  const gameState = await createGameState();
   const canvasRenderer = createCanvasRenderer('game', gameState);
 
   const menu = createMenu();

@@ -44,8 +44,20 @@ export type CurrentState = 'menu' | 'playing' | 'paused' | 'gameover';
 export type GameState = {
   player: Player,
   state: CurrentState,
+  server: GameServer,
+};
+
+export type GameServer = {
+  joinGame: (playerName: string) => void;
+  sendState: (playerState: PlayerState) => void;
 };
 
 export type Ref<T> = {
   value: T,
+};
+
+export type PlayerState = {
+  x: number;
+  y: number;
+  rotation: number;
 };

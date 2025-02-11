@@ -1,9 +1,13 @@
-export const createGameState = () => {
+import { initGameServer } from './server.js';
+
+export const createGameState = async () => {
   /** @type {import('./types.d.ts').CurrentState} */
   let state = 'menu';
 
   /** @type {import('./player.js').Player | undefined} */
   let player = undefined;
+
+  const server = await initGameServer();
 
   return {
     get player() { return player },
@@ -11,5 +15,7 @@ export const createGameState = () => {
 
     get state() { return state },
     set state(value) { state = value },
+
+    get server() { return server },
   }
 }

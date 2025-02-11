@@ -23,12 +23,12 @@ func (gs *GameState) GetPlayers() map[string]*Player {
   return gs.Players
 }
 
-func (gs *GameState) AddPlayer(playerId string) {
+func (gs *GameState) AddPlayer(playerId string, playerName string) {
   gs.mu.Lock()
   
   defer gs.mu.Unlock()
 
-  gs.Players[playerId] = CreatePlayer(300, 200, playerId) 
+  gs.Players[playerId] = CreatePlayer(300, 200, playerName) 
 }
 
 func (gs *GameState) UpdatePlayer(playerId string, dx, dy int64) {

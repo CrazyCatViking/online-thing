@@ -8,6 +8,7 @@ import (
 	"github.com/CrazyCatViking/online-thing/gamestate"
 	"github.com/gorilla/websocket"
 	"github.com/labstack/echo/v4"
+  "github.com/google/uuid"
 )
 
 var (
@@ -17,9 +18,10 @@ var (
 
 type Message struct {
   Type string `json:"type"`
-  PlayerId string `json:"playerId"`
+  PlayerName string `json:"playerName"`
   X int64 `json:"x"`
   Y int64 `json:"y"`
+  Rotation float64 `json:"rotation"`
 }
 
 func main() {
@@ -49,31 +51,33 @@ func initWSConnection(ctx echo.Context) error {
 
   defer ws.Close()
 
-  go sendServerState(ws)
+  playerId, _ := uuid.NewRandom()
+
+  go sendServerState(ws, playerId.String())
 
   for {
 		// Read
     message := Message{}
 
 		err := ws.ReadJSON(&message)
+
 		if err != nil {
 			fmt.Println(err)
       return nil
 		}
 
     switch message.Type {
-    case "join":
-      fmt.Println("Joining player", message.PlayerId)
-      gameState.AddPlayer(message.PlayerId)
-      break
+    case "start":
+      fmt.Println("Player joining match")
+      gameState.AddPlayer(playerId.String(), message.PlayerName)
     case "update":
-      gameState.UpdatePlayer(message.PlayerId, message.X, message.Y)
+      gameState.UpdatePlayer(playerId.String(), message.X, message.Y)
       break
     }
   }
 }
 
-func sendServerState(ws *websocket.Conn) error {
+func sendServerState(ws *websocket.Conn, playerId string) error {
   for {
     // Write
 		err := ws.WriteJSON(gameState.GetPlayers())

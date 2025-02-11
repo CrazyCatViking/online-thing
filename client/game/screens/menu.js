@@ -27,6 +27,7 @@ export const createMenu = () => {
   const button = createButton(buttonOptions, ({ gameState }) => {
     gameState.state = 'playing';
     gameState.player = createPlayer(400, 300, playerName.value);
+    gameState.server.joinGame(playerName.value);
   });
 
   const textInput = createTextInput(textInputOptions, playerName);
