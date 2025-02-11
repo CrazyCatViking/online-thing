@@ -28,7 +28,12 @@ export const createCanvasRenderer = (canvasId, gameState) => {
     throw new Error('Could not get buffer canvas context');
   }
 
-  const input = initInputQueue(canvas);
+  const inputBuffer = initInputQueue(canvas);
+  let input = inputBuffer.readInputs();
+
+  const pullInputs = () => {
+    input = inputBuffer.readInputs();
+  };
 
   /** @param {import('./types.d.ts').Renderable} renderable */
   const render = (renderable) => {
@@ -43,6 +48,7 @@ export const createCanvasRenderer = (canvasId, gameState) => {
   };
 
   return {
+    pullInputs,
     render,
     swap,
   };

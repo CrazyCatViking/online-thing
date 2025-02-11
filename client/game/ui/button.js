@@ -14,7 +14,7 @@ export const createButton = ({ text, x, y, width, height }, callback) => {
 
     const isHovered = checkIsHovered(input.mouseX, input.mouseY, { x, y, width, height });
 
-    if (input.keys.has('leftMouseButton') && isHovered) {
+    if (input.pressedKeys.has('leftMouseButton') && isHovered) {
       callback(context);
     };
 

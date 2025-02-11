@@ -11,6 +11,7 @@ export const initGame = () => {
   const gameBoard = createGameBoard();
 
   const renderFrame = () => {
+    canvasRenderer.pullInputs();
     canvasRenderer.render(gameBoard);
   
     if (gameState.state === 'menu') {

@@ -16,14 +16,22 @@ export const createTextInput = ({ label, x, y, width, height }, valueRef) => {
 
     const isHovered = checkIsHovered(input.mouseX, input.mouseY, { x, y, width, height });
 
-    if (input.keys.has('leftMouseButton') && isHovered) {
+    if (input.pressedKeys.has('leftMouseButton') && isHovered) {
       isFocused = true;
-    } else if (input.keys.has('leftMouseButton') && !isHovered) {
+    } else if (input.pressedKeys.has('leftMouseButton') && !isHovered) {
       isFocused = false;
     }
 
     if (isFocused) {
-      for (const key of Array.from(input.keys.keys())) {
+      for (const key of input.inputQueue) {
+        if (key === 'Space') {
+          valueRef.value += ' ';
+        }
+
+        if (key === 'Backspace') {
+          valueRef.value = valueRef.value.slice(0, valueRef.value.length - 1); 
+        }
+
         if (key.length !== 4) {
           continue;
         }

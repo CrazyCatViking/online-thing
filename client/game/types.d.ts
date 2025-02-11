@@ -6,9 +6,10 @@ export type RenderContext = {
 };
 
 export type InputQueue = {
-  keys: Map<Key, boolean>,
-  mouseX: number,
-  mouseY: number,
+  pressedKeys: Map<Key, boolean>,
+  inputQueue: string[],
+  mouseX: readonly number,
+  mouseY: readonly number,
 };
 
 export type Renderable = {

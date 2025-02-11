@@ -13,19 +13,19 @@ export const createPlayer = (initialX, initialY, initialUuid) => {
 
   /** @param {import('./types.d.ts').InputQueue} input */
   const update = (input) => {
-    if (input.keys.has('KeyW')) {
+    if (input.pressedKeys.has('KeyW')) {
       y -= 1;
     }
 
-    if (input.keys.has('KeyS')) {
+    if (input.pressedKeys.has('KeyS')) {
       y += 1;
     }
 
-    if (input.keys.has('KeyD')) {
+    if (input.pressedKeys.has('KeyD')) {
       x += 1;
     }
 
-    if (input.keys.has('KeyA')) {
+    if (input.pressedKeys.has('KeyA')) {
       x -= 1;
     }
 

@@ -9,7 +9,7 @@ export const createGameBoard = () => {
       return;     
     }
 
-    if (input.keys.has('Escape')) {
+    if (input.pressedKeys.has('Escape')) {
       gameState.state = 'menu';
       gameState.player = undefined;
     }
