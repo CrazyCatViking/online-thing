@@ -8,7 +8,7 @@ export const createMenu = () => {
 
   const textInputOptions = {
     label: 'Start',
-    x: 300,
+    x: 200,
     y: 350,
     width: 400,
     height: 50,
@@ -26,7 +26,7 @@ export const createMenu = () => {
 
   const button = createButton(buttonOptions, ({ gameState }) => {
     gameState.state = 'playing';
-    gameState.player = createPlayer(400, 300, 'player1');
+    gameState.player = createPlayer(400, 300, playerName.value);
   });
 
   const textInput = createTextInput(textInputOptions, playerName);

@@ -2,12 +2,13 @@
  * @typedef {ReturnType<typeof createPlayer>} Player 
  * @param {number} initialX
  * @param {number} initialY
- * @param {string} initialUuid
+ * @param {string} name
  */
-export const createPlayer = (initialX, initialY, initialUuid) => {
+export const createPlayer = (initialX, initialY, name) => {
+  let _name = name;
+
   let x = initialX;
   let y = initialY;
-  let uuid = initialUuid;
 
   let rotation = 0;
 
@@ -60,6 +61,11 @@ export const createPlayer = (initialX, initialY, initialUuid) => {
     update(input);
 
     ctx.fillStyle = 'white';
+
+    // Render player name
+    ctx.font = '12px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(_name, x, y - 20);
 
     ctx.translate(x, y);
     ctx.rotate(rotation);
