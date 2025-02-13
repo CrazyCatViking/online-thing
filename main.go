@@ -24,6 +24,11 @@ type Message struct {
   Rotation float64 `json:"rotation"`
 }
 
+type GameState struct {
+  Type string `json:"type"`
+  Enemies []*gamestate.Player `json:"enemies"`
+}
+
 func main() {
   upgrader.CheckOrigin = func(r *http.Request) bool {
     return true
@@ -71,7 +76,7 @@ func initWSConnection(ctx echo.Context) error {
       fmt.Println("Player joining match")
       gameState.AddPlayer(playerId.String(), message.PlayerName)
     case "update":
-      gameState.UpdatePlayer(playerId.String(), message.X, message.Y)
+      gameState.UpdatePlayer(playerId.String(), message.X, message.Y, message.Rotation)
       break
     }
   }
@@ -79,8 +84,12 @@ func initWSConnection(ctx echo.Context) error {
 
 func sendServerState(ws *websocket.Conn, playerId string) error {
   for {
-    // Write
-		err := ws.WriteJSON(gameState.GetPlayers())
+    state := GameState {
+      Type: "game-state",
+      Enemies: gameState.GetEnemies(playerId),
+    }
+
+		err := ws.WriteJSON(state)
 		if err != nil {
 			fmt.Println(err)
       return nil

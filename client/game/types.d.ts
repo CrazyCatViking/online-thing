@@ -1,3 +1,5 @@
+import { Enemy } from "./enemy";
+
 export type RenderContext = {
   canvas: HTMLCanvasElement,
   ctx: CanvasRenderingContext2D,
@@ -45,11 +47,9 @@ export type GameState = {
   player: Player,
   state: CurrentState,
   server: GameServer,
-};
-
-export type GameServer = {
   joinGame: (playerName: string) => void;
   sendState: (playerState: PlayerState) => void;
+  enemies: Map<string, Enemy>,
 };
 
 export type Ref<T> = {
@@ -61,3 +61,18 @@ export type PlayerState = {
   y: number;
   rotation: number;
 };
+
+export type EnemyState = {
+  x: number;
+  y: number;
+  rotation: number;
+  playerName: string;
+  playerId: string;
+};
+
+export type Message = GameStateMessage;
+
+export type GameStateMessage = {
+  type: 'game-state';
+  enemies: EnemyState[];
+}

@@ -1,4 +1,5 @@
-import { initGameServer } from './server.js';
+import { createEnemy } from './enemy.js';
+import { connect } from './server.js';
 
 export const createGameState = async () => {
   /** @type {import('./types.d.ts').CurrentState} */
@@ -7,7 +8,46 @@ export const createGameState = async () => {
   /** @type {import('./player.js').Player | undefined} */
   let player = undefined;
 
-  const server = await initGameServer();
+  /** @type {Map<string, import('./enemy.js').Enemy>} */
+  let enemies = new Map();
+
+  const server = await connect();
+
+  /** @param {string} playerName */
+  const joinGame = (playerName) => {
+    server.send(JSON.stringify({ type: 'start', playerName }));
+  };
+
+  /** @param {import('./types.d.ts').PlayerState} playerState */
+  const sendState = (playerState) => {
+    server.send(JSON.stringify({ 
+      type: 'update',
+      x: playerState.x,
+      y: playerState.y,
+      rotation: playerState.rotation,
+    }));
+  };
+
+  server.onmessage = (e) => {
+    /** @type {import('./types.d.ts').Message} */
+    const data = JSON.parse(e.data); 
+
+    if (data.type === 'game-state') {
+      if (!data.enemies) return;
+
+      for (const enemy of data.enemies) {
+        const existingEnemy = enemies.get(enemy.playerId);
+
+        if (existingEnemy) {
+          existingEnemy.updateState(enemy);
+          continue;
+        }
+
+        const newEnemy = createEnemy(enemy);
+        enemies.set(enemy.playerId, newEnemy);
+      }
+    }
+  };
 
   return {
     get player() { return player },
@@ -16,6 +56,8 @@ export const createGameState = async () => {
     get state() { return state },
     set state(value) { state = value },
 
-    get server() { return server },
+    joinGame,
+    sendState,
+    enemies,
   }
 }

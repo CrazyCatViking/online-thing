@@ -59,7 +59,7 @@ export const createPlayer = (initialX, initialY, name) => {
   /** @param {import('./types.d.ts').RenderContext} context */
   const render = ({ ctx, input, gameState }) => {
     update(input);
-    gameState.server.sendState({ x, y, rotation });
+    gameState.sendState({ x, y, rotation });
 
     ctx.fillStyle = 'white';
 

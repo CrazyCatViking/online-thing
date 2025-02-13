@@ -1,3 +1,5 @@
+import { createPlayer } from '../player.js';
+
 export const createGameBoard = () => {
   /** 
    * @param {import('../types.d.ts').RenderContext} context 
@@ -19,6 +21,12 @@ export const createGameBoard = () => {
 
     if (gameState.player !== undefined) {
       gameState.player.render(context);
+    }
+
+    if (gameState.enemies) {
+      for (const enemy of gameState.enemies.values()) {
+        enemy.render(context);
+      } 
     }
   };
 
